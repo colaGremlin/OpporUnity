@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScholarshipCard } from "@/components/ScholarshipCard";
@@ -7,14 +6,16 @@ import { FilterSidebar, FilterOptions } from "@/components/FilterSidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { Search, SlidersHorizontal, X, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
 
 const Discover = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
+  const contentRef = useRef<HTMLDivElement>(null);
   
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -30,7 +31,10 @@ const Discover = () => {
     educationLevels: [],
   });
   
-  // Pakistan-specific scholarship data with diverse opportunities
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+  
   const scholarships = [
     {
       id: 1,
@@ -214,7 +218,6 @@ const Discover = () => {
     }
   ];
 
-  // Apply initial search on component mount
   useEffect(() => {
     if (initialQuery) {
       handleSearch();
@@ -226,10 +229,8 @@ const Discover = () => {
   const handleSearch = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     
-    // Filter scholarships based on search query and active filters
     let filtered = [...scholarships];
     
-    // Apply search query if exists
     if (searchQuery && searchQuery.trim() !== '') {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(scholarship => {
@@ -238,24 +239,20 @@ const Discover = () => {
           scholarship.provider.toLowerCase().includes(query) ||
           scholarship.category.toLowerCase().includes(query) ||
           scholarship.type.toLowerCase().includes(query) ||
-          scholarship.keywords.some(keyword => keyword.includes(query)) ||
-          scholarship.eligibility.some(item => item.toLowerCase().includes(query))
+          scholarship.keywords.some((keyword: string) => keyword.includes(query)) ||
+          scholarship.eligibility.some((item: string) => item.toLowerCase().includes(query))
         );
       });
     }
     
-    // Apply amount filter
     filtered = filtered.filter(scholarship => {
-      // Handle full funding or text amounts
       if (scholarship.amount.toLowerCase().includes('full')) return true;
       
-      // Extract numeric value from amount
       const amountStr = scholarship.amount.replace(/[^0-9]/g, '');
       const amount = amountStr ? parseInt(amountStr) : 0;
       return amount >= activeFilters.minAmount && amount <= activeFilters.maxAmount;
     });
     
-    // Apply deadline filter
     if (activeFilters.deadlineBefore) {
       const deadlineDate = new Date(activeFilters.deadlineBefore);
       filtered = filtered.filter(scholarship => {
@@ -264,7 +261,6 @@ const Discover = () => {
       });
     }
     
-    // Apply scholarship type filter
     if (activeFilters.scholarshipTypes.length > 0) {
       filtered = filtered.filter(scholarship => 
         activeFilters.scholarshipTypes.includes(scholarship.category) ||
@@ -272,7 +268,6 @@ const Discover = () => {
       );
     }
     
-    // Apply eligibility filter
     if (activeFilters.eligibility.length > 0) {
       filtered = filtered.filter(scholarship => 
         scholarship.eligibility.some(item => 
@@ -283,7 +278,6 @@ const Discover = () => {
       );
     }
     
-    // Apply education level filter
     if (activeFilters.educationLevels.length > 0) {
       filtered = filtered.filter(scholarship => 
         scholarship.eligibility.some(item => 
@@ -294,7 +288,6 @@ const Discover = () => {
       );
     }
     
-    // Sort results
     switch (sortOption) {
       case "deadline":
         filtered.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
@@ -325,16 +318,13 @@ const Discover = () => {
     
     setFilteredScholarships(filtered);
     
-    // Show toast notification with results count
     toast.success(`Found ${filtered.length} scholarships`);
   };
 
   const handleApplyFilters = (filters: FilterOptions) => {
     setActiveFilters(filters);
-    // Show visual feedback
     toast.info("Filters applied");
     
-    // Apply filters with current search
     setTimeout(() => handleSearch(), 100);
   };
 
@@ -344,7 +334,6 @@ const Discover = () => {
         ? prev.filter(scholarshipId => scholarshipId !== id) 
         : [...prev, id];
       
-      // Show toast notification
       if (prev.includes(id)) {
         toast.info("Removed from saved opportunities");
       } else {
@@ -360,7 +349,6 @@ const Discover = () => {
       <Header />
       
       <main className="flex-grow">
-        {/* Search Bar */}
         <div className="bg-scholarship-background/90 border-b border-white/10 sticky top-[73px] z-30 py-4">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
@@ -393,11 +381,20 @@ const Discover = () => {
                 <Button 
                   type="button" 
                   variant="outline" 
-                  className="border-white/10 hover:bg-white/5 md:hidden"
+                  className="border-white/10 hover:bg-white/5"
                   onClick={() => setFilterOpen(!filterOpen)}
                 >
-                  <SlidersHorizontal className="h-4 w-4 mr-2" />
-                  Filters
+                  {filterOpen ? (
+                    <>
+                      <ChevronLeft className="h-4 w-4 mr-2" />
+                      Hide Filters
+                    </>
+                  ) : (
+                    <>
+                      <SlidersHorizontal className="h-4 w-4 mr-2" />
+                      Show Filters
+                    </>
+                  )}
                 </Button>
                 
                 <Select
@@ -430,15 +427,16 @@ const Discover = () => {
         </div>
         
         <div className="flex flex-grow">
-          {/* Filter Sidebar */}
-          <FilterSidebar 
-            isOpen={filterOpen} 
-            onClose={() => setFilterOpen(false)} 
-            onApplyFilters={handleApplyFilters}
-          />
+          <div className={`transition-all duration-300 fixed md:static top-[136px] bottom-0 left-0 z-20 bg-scholarship-background border-r border-white/10 w-80 overflow-auto 
+            ${filterOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-0 md:opacity-0 md:invisible'}`}>
+            <FilterSidebar 
+              isOpen={filterOpen} 
+              onClose={() => setFilterOpen(false)} 
+              onApplyFilters={handleApplyFilters}
+            />
+          </div>
           
-          {/* Scholarship Results */}
-          <div className="flex-grow p-4 md:p-6 md:ml-80">
+          <div ref={contentRef} className={`flex-grow p-4 md:p-6 transition-all duration-300 ${filterOpen ? 'md:ml-80' : 'ml-0'}`}>
             <div className="container mx-auto">
               <div className="mb-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-2">
@@ -490,7 +488,6 @@ const Discover = () => {
                 )}
               </div>
               
-              {/* Pagination for results */}
               {filteredScholarships.length > 0 && (
                 <div className="mt-10 flex justify-center">
                   <Button variant="outline" className="border-white/10 hover:bg-white/5 mr-2">

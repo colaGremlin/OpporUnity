@@ -50,14 +50,14 @@ export function ScholarshipCard({
   const daysLeft = daysUntil();
   
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-300 bg-scholarship-background border border-white/10 text-scholarship-foreground overflow-hidden">
+    <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 bg-scholarship-background border border-white/10 text-scholarship-foreground overflow-hidden">
       {matchPercentage && (
         <div className="bg-scholarship-accent/90 text-scholarship-background py-1 px-3 text-xs font-semibold absolute top-0 right-0">
           {matchPercentage}% Match
         </div>
       )}
       
-      <CardContent className="p-6">
+      <CardContent className="p-6 flex-grow">
         <div className="flex justify-between">
           <div>
             <h3 className="font-bold text-xl mb-1 text-scholarship-foreground">{title}</h3>
@@ -110,7 +110,7 @@ export function ScholarshipCard({
         </div>
       </CardContent>
       
-      <CardFooter className="pt-0 px-6 pb-6">
+      <CardFooter className="pt-0 px-6 pb-6 mt-auto">
         <Button 
           onClick={onViewDetails} 
           className="w-full bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90"

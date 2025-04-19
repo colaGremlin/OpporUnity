@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -64,10 +63,10 @@ const Index = () => {
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               Find Your Path to Educational 
-              <span className="text-scholarship-accent"> Opportunity</span> in Pakistan
+              <span className="text-scholarship-accent"> Opportunity</span> for Underserved Students
             </h1>
             <p className="text-xl mb-8 text-scholarship-foreground/80">
-              Connecting Pakistani students with scholarships, grants, fellowships, and programs 
+              Connecting underserved students with scholarships, grants, fellowships, and programs 
               tailored to their unique journey.
             </p>
             

@@ -1,4 +1,5 @@
-import { CalendarIcon, BookmarkIcon, CoinsIcon, GraduationCapIcon } from "lucide-react";
+
+import { CalendarIcon, BookmarkIcon, CoinIcon, GraduationCapIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +38,7 @@ export function ScholarshipCard({
     });
   };
 
+  // Calculate days until deadline
   const daysUntil = () => {
     const today = new Date();
     const deadlineDate = new Date(deadline);
@@ -47,11 +49,9 @@ export function ScholarshipCard({
 
   const daysLeft = daysUntil();
   
+  // Format amount to display Rs instead of dollar
   const formatAmount = (amountStr: string) => {
-    return amountStr
-      .replace('$', 'Rs. ')
-      .replace('PKR', 'Rs. ')
-      .replace('USD', 'Rs. ');
+    return amountStr.replace('$', 'Rs. ').replace('PKR', 'Rs. ');
   };
   
   return (
@@ -82,7 +82,7 @@ export function ScholarshipCard({
         
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="flex items-center">
-            <CoinsIcon className="h-4 w-4 mr-2 text-scholarship-accent" />
+            <CoinIcon className="h-4 w-4 mr-2 text-scholarship-accent" />
             <span className="text-sm">{formatAmount(amount)}</span>
           </div>
           <div className="flex items-center">
@@ -103,7 +103,7 @@ export function ScholarshipCard({
           <Badge className="bg-black/5 hover:bg-black/10 text-xs border border-black/10">{category}</Badge>
         </div>
         
-        <div className="space-y-2 mb-4">
+        <div className="space-y-2">
           <p className="text-xs font-medium text-scholarship-foreground/70">Eligibility:</p>
           <div className="flex flex-wrap gap-2">
             {eligibility.map((item, index) => (
@@ -115,7 +115,7 @@ export function ScholarshipCard({
         </div>
       </CardContent>
       
-      <CardFooter className="pt-0 px-6 pb-6 mt-auto">
+      <CardFooter className="pt-0 px-6 pb-6">
         <Button 
           onClick={onViewDetails} 
           className="w-full bg-scholarship-accent text-white hover:bg-scholarship-accent/80"

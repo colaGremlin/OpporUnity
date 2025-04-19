@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScholarshipCard } from "@/components/ScholarshipCard";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Search, SlidersHorizontal, X } from "lucide-react";
+import { toast } from "sonner";
 
 const Discover = () => {
   const navigate = useNavigate();
@@ -19,118 +20,339 @@ const Discover = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOption, setSortOption] = useState("relevance");
   const [savedScholarships, setSavedScholarships] = useState<number[]>([]);
+  const [filteredScholarships, setFilteredScholarships] = useState<any[]>([]);
+  const [activeFilters, setActiveFilters] = useState<FilterOptions>({
+    minAmount: 0,
+    maxAmount: 50000,
+    deadlineBefore: null,
+    scholarshipTypes: [],
+    eligibility: [],
+    educationLevels: [],
+  });
   
-  // Mock data - would come from API in a real app
+  // Pakistan-specific scholarship data with diverse opportunities
   const scholarships = [
     {
       id: 1,
-      title: "Future Leaders Scholarship",
-      provider: "Global Education Foundation",
-      amount: "$10,000",
+      title: "HEC Overseas Scholarship",
+      provider: "Higher Education Commission Pakistan",
+      amount: "Full Funding",
       deadline: "2025-08-15",
-      category: "Leadership",
-      eligibility: ["Undergraduate", "3.5+ GPA", "Community Service"],
+      category: "Scholarship",
+      eligibility: ["Pakistani Nationals", "MS/PhD", "16 Years Education"],
       matchPercentage: 95,
+      type: "Scholarship",
+      keywords: ["hec", "overseas", "higher education", "phd", "ms", "masters", "doctoral"]
     },
     {
       id: 2,
-      title: "STEM Innovation Grant",
-      provider: "TechForward Initiative",
-      amount: "$5,000",
+      title: "STEM Research Grant",
+      provider: "Pakistan Science Foundation",
+      amount: "PKR 1,000,000",
       deadline: "2025-07-01",
-      category: "STEM",
-      eligibility: ["Graduate", "Research", "Engineering"],
+      category: "Research Grant",
+      eligibility: ["STEM Fields", "Research Proposal", "Pakistani University"],
       matchPercentage: 88,
+      type: "Grant",
+      keywords: ["science", "technology", "engineering", "mathematics", "research", "grant", "stem"]
     },
     {
       id: 3,
-      title: "Rural Education Access Program",
-      provider: "Community Foundation",
-      amount: "$7,500",
+      title: "Balochistan Education Endowment Fund",
+      provider: "Government of Balochistan",
+      amount: "PKR 150,000/year",
       deadline: "2025-06-30",
       category: "Need-Based",
-      eligibility: ["Rural Communities", "First Generation", "Any Major"],
+      eligibility: ["Balochistan Residents", "Underprivileged", "Merit"],
       matchPercentage: 92,
+      type: "Scholarship",
+      keywords: ["balochistan", "need-based", "underprivileged", "province", "government"]
     },
     {
       id: 4,
-      title: "Arts & Humanities Fellowship",
-      provider: "Creative Minds Foundation",
-      amount: "$3,000",
+      title: "Arts & Cultural Fellowship",
+      provider: "Pakistan National Council of the Arts",
+      amount: "PKR 500,000",
       deadline: "2025-09-15",
       category: "Arts",
-      eligibility: ["Undergraduate", "Arts Major", "Portfolio Required"],
+      eligibility: ["Pakistani Artists", "Portfolio Required", "Cultural Studies"],
       matchPercentage: 78,
+      type: "Fellowship",
+      keywords: ["arts", "culture", "fellowship", "artist", "creative"]
     },
     {
       id: 5,
-      title: "First Generation Student Scholarship",
-      provider: "Pathway to College",
-      amount: "$8,000",
+      title: "USAID Merit & Need-Based Scholarship",
+      provider: "USAID Pakistan",
+      amount: "Full Tuition",
       deadline: "2025-07-30",
       category: "Need-Based",
-      eligibility: ["First Generation", "3.0+ GPA", "Financial Need"],
+      eligibility: ["Underprivileged", "3.0+ GPA", "Financial Need"],
       matchPercentage: 90,
+      type: "Scholarship",
+      keywords: ["usaid", "need-based", "merit", "financial need", "international"]
     },
     {
       id: 6,
-      title: "Community Change Makers Grant",
-      provider: "Social Impact Alliance",
-      amount: "$6,000",
+      title: "Social Innovation Challenge",
+      provider: "Akhuwat Foundation",
+      amount: "PKR 750,000",
       deadline: "2025-08-05",
       category: "Social Impact",
-      eligibility: ["Any Level", "Community Project", "Leadership"],
+      eligibility: ["Social Entrepreneurs", "Community Project", "Sustainable Development"],
       matchPercentage: 85,
+      type: "Grant",
+      keywords: ["social", "innovation", "impact", "entrepreneur", "challenge", "development"]
     },
     {
       id: 7,
       title: "Women in Technology Scholarship",
-      provider: "Tech Diversity Initiative",
-      amount: "$12,000",
+      provider: "Pakistan Software Houses Association",
+      amount: "PKR 600,000",
       deadline: "2025-06-15",
       category: "STEM",
-      eligibility: ["Women", "Computer Science", "Undergraduate/Graduate"],
+      eligibility: ["Women", "Computer Science", "IT Fields"],
       matchPercentage: 87,
+      type: "Scholarship",
+      keywords: ["women", "technology", "IT", "tech", "computer science", "female", "diversity"]
     },
     {
       id: 8,
-      title: "Global Citizens Fellowship",
-      provider: "International Education Council",
-      amount: "$15,000",
-      deadline: "2025-10-01",
+      title: "Fulbright Pakistan Program",
+      provider: "USEFP",
+      amount: "Full Funding",
+      deadline: "2025-05-11",
       category: "International",
-      eligibility: ["Study Abroad", "Language Skills", "Any Major"],
-      matchPercentage: 76,
+      eligibility: ["Pakistani Citizens", "Masters/PhD", "English Proficiency"],
+      matchPercentage: 94,
+      type: "Scholarship",
+      keywords: ["fulbright", "international", "us", "america", "exchange", "masters", "phd"]
     },
     {
       id: 9,
-      title: "Environmental Leadership Award",
-      provider: "Green Future Foundation",
-      amount: "$4,500",
-      deadline: "2025-05-30",
-      category: "Environment",
-      eligibility: ["Environmental Studies", "Research", "Activism"],
-      matchPercentage: 82,
+      title: "Ehsaas Undergraduate Scholarship",
+      provider: "Government of Pakistan",
+      amount: "Full Tuition",
+      deadline: "2025-09-30",
+      category: "Need-Based",
+      eligibility: ["Low Income", "Undergraduate", "Public University"],
+      matchPercentage: 89,
+      type: "Scholarship",
+      keywords: ["ehsaas", "undergraduate", "need-based", "government", "low income"]
     },
+    {
+      id: 10,
+      title: "Pakistan Agricultural Research Grant",
+      provider: "Pakistan Agricultural Research Council",
+      amount: "PKR 1,500,000",
+      deadline: "2025-10-15",
+      category: "Agriculture",
+      eligibility: ["Agriculture Research", "Food Security", "Climate Adaptation"],
+      matchPercentage: 82,
+      type: "Research Grant",
+      keywords: ["agriculture", "research", "food", "climate", "farming", "grant"]
+    },
+    {
+      id: 11,
+      title: "Minority Education Scholarship",
+      provider: "Ministry of Religious Affairs",
+      amount: "PKR 120,000/year",
+      deadline: "2025-07-22",
+      category: "Minority Support",
+      eligibility: ["Religious Minorities", "Pakistani Citizens", "Academic Merit"],
+      matchPercentage: 88,
+      type: "Scholarship",
+      keywords: ["minority", "christian", "hindu", "sikh", "religious", "diversity"]
+    },
+    {
+      id: 12,
+      title: "Prime Minister's Youth Skills Development Program",
+      provider: "Government of Pakistan",
+      amount: "Free Training + Stipend",
+      deadline: "2025-06-05",
+      category: "Vocational",
+      eligibility: ["18-35 Age", "Pakistani Nationals", "Unemployed Youth"],
+      matchPercentage: 80,
+      type: "Training Program",
+      keywords: ["youth", "skills", "vocational", "training", "development", "employment"]
+    },
+    {
+      id: 13,
+      title: "DAAD Pakistani-German Research Collaboration",
+      provider: "DAAD Pakistan",
+      amount: "EUR 25,000",
+      deadline: "2025-08-30",
+      category: "Research",
+      eligibility: ["Pakistani Researchers", "German Partnership", "Joint Project"],
+      matchPercentage: 75,
+      type: "Research Collaboration",
+      keywords: ["german", "international", "research", "collaboration", "europe", "partnership"]
+    },
+    {
+      id: 14,
+      title: "KPK Tribal Areas Education Support",
+      provider: "Government of KPK",
+      amount: "PKR 80,000/year",
+      deadline: "2025-09-10",
+      category: "Regional",
+      eligibility: ["KPK Tribal Areas Residents", "Financial Need", "Any Field"],
+      matchPercentage: 91,
+      type: "Scholarship",
+      keywords: ["tribal", "kpk", "khyber pakhtunkhwa", "region", "rural", "support"]
+    },
+    {
+      id: 15,
+      title: "Commonwealth PhD Scholarships for Pakistan",
+      provider: "Commonwealth Scholarship Commission",
+      amount: "Full Funding",
+      deadline: "2025-10-20",
+      category: "International",
+      eligibility: ["Pakistani Nationals", "PhD Studies", "UK Universities"],
+      matchPercentage: 86,
+      type: "Scholarship",
+      keywords: ["commonwealth", "uk", "britain", "phd", "international", "doctoral"]
+    }
   ];
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real app, this would trigger an API call with the search query
-    console.log("Searching for:", searchQuery);
+  // Apply initial search on component mount
+  useEffect(() => {
+    if (initialQuery) {
+      handleSearch();
+    } else {
+      setFilteredScholarships(scholarships);
+    }
+  }, []);
+
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    
+    // Filter scholarships based on search query and active filters
+    let filtered = [...scholarships];
+    
+    // Apply search query if exists
+    if (searchQuery && searchQuery.trim() !== '') {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(scholarship => {
+        return (
+          scholarship.title.toLowerCase().includes(query) ||
+          scholarship.provider.toLowerCase().includes(query) ||
+          scholarship.category.toLowerCase().includes(query) ||
+          scholarship.type.toLowerCase().includes(query) ||
+          scholarship.keywords.some(keyword => keyword.includes(query)) ||
+          scholarship.eligibility.some(item => item.toLowerCase().includes(query))
+        );
+      });
+    }
+    
+    // Apply amount filter
+    filtered = filtered.filter(scholarship => {
+      // Handle full funding or text amounts
+      if (scholarship.amount.toLowerCase().includes('full')) return true;
+      
+      // Extract numeric value from amount
+      const amountStr = scholarship.amount.replace(/[^0-9]/g, '');
+      const amount = amountStr ? parseInt(amountStr) : 0;
+      return amount >= activeFilters.minAmount && amount <= activeFilters.maxAmount;
+    });
+    
+    // Apply deadline filter
+    if (activeFilters.deadlineBefore) {
+      const deadlineDate = new Date(activeFilters.deadlineBefore);
+      filtered = filtered.filter(scholarship => {
+        const scholarshipDeadline = new Date(scholarship.deadline);
+        return scholarshipDeadline <= deadlineDate;
+      });
+    }
+    
+    // Apply scholarship type filter
+    if (activeFilters.scholarshipTypes.length > 0) {
+      filtered = filtered.filter(scholarship => 
+        activeFilters.scholarshipTypes.includes(scholarship.category) ||
+        activeFilters.scholarshipTypes.includes(scholarship.type)
+      );
+    }
+    
+    // Apply eligibility filter
+    if (activeFilters.eligibility.length > 0) {
+      filtered = filtered.filter(scholarship => 
+        scholarship.eligibility.some(item => 
+          activeFilters.eligibility.some(filter => 
+            item.toLowerCase().includes(filter.toLowerCase())
+          )
+        )
+      );
+    }
+    
+    // Apply education level filter
+    if (activeFilters.educationLevels.length > 0) {
+      filtered = filtered.filter(scholarship => 
+        scholarship.eligibility.some(item => 
+          activeFilters.educationLevels.some(level => 
+            item.toLowerCase().includes(level.toLowerCase())
+          )
+        )
+      );
+    }
+    
+    // Sort results
+    switch (sortOption) {
+      case "deadline":
+        filtered.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
+        break;
+      case "amount-high":
+        filtered.sort((a, b) => {
+          if (a.amount.toLowerCase().includes('full')) return -1;
+          if (b.amount.toLowerCase().includes('full')) return 1;
+          
+          const aAmount = parseInt(a.amount.replace(/[^0-9]/g, '') || '0');
+          const bAmount = parseInt(b.amount.replace(/[^0-9]/g, '') || '0');
+          return bAmount - aAmount;
+        });
+        break;
+      case "amount-low":
+        filtered.sort((a, b) => {
+          if (a.amount.toLowerCase().includes('full')) return 1;
+          if (b.amount.toLowerCase().includes('full')) return -1;
+          
+          const aAmount = parseInt(a.amount.replace(/[^0-9]/g, '') || '0');
+          const bAmount = parseInt(b.amount.replace(/[^0-9]/g, '') || '0');
+          return aAmount - bAmount;
+        });
+        break;
+      default: // relevance - sort by match percentage
+        filtered.sort((a, b) => b.matchPercentage - a.matchPercentage);
+    }
+    
+    setFilteredScholarships(filtered);
+    
+    // Show toast notification with results count
+    toast.success(`Found ${filtered.length} scholarships`);
   };
 
   const handleApplyFilters = (filters: FilterOptions) => {
-    console.log("Applied filters:", filters);
-    // In a real app, this would trigger an API call with the filters
+    setActiveFilters(filters);
+    // Show visual feedback
+    toast.info("Filters applied");
+    
+    // Apply filters with current search
+    setTimeout(() => handleSearch(), 100);
   };
 
   const toggleSaveScholarship = (id: number) => {
-    setSavedScholarships(prev => 
-      prev.includes(id) 
+    setSavedScholarships(prev => {
+      const newSaved = prev.includes(id) 
         ? prev.filter(scholarshipId => scholarshipId !== id) 
-        : [...prev, id]
-    );
+        : [...prev, id];
+      
+      // Show toast notification
+      if (prev.includes(id)) {
+        toast.info("Removed from saved opportunities");
+      } else {
+        toast.success("Added to saved opportunities");
+      }
+      
+      return newSaved;
+    });
   };
 
   return (
@@ -146,7 +368,7 @@ const Discover = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search scholarships..."
+                  placeholder="Search scholarships, grants, fellowships..."
                   className="pl-10 bg-white/5 border-white/10 text-scholarship-foreground w-full"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -157,7 +379,10 @@ const Discover = () => {
                     variant="ghost" 
                     size="icon" 
                     className="absolute right-2 top-1/2 -translate-y-1/2"
-                    onClick={() => setSearchQuery("")}
+                    onClick={() => {
+                      setSearchQuery("");
+                      setTimeout(() => handleSearch(), 100);
+                    }}
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -177,7 +402,10 @@ const Discover = () => {
                 
                 <Select
                   value={sortOption}
-                  onValueChange={setSortOption}
+                  onValueChange={(value) => {
+                    setSortOption(value);
+                    setTimeout(() => handleSearch(), 100);
+                  }}
                 >
                   <SelectTrigger className="bg-white/5 border-white/10 w-[180px]">
                     <SelectValue placeholder="Sort By" />
@@ -214,40 +442,65 @@ const Discover = () => {
             <div className="container mx-auto">
               <div className="mb-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-2">
-                  Discover <span className="text-scholarship-accent">Scholarships</span>
+                  Discover <span className="text-scholarship-accent">Opportunities</span> in Pakistan
                 </h1>
                 <p className="text-scholarship-foreground/70">
-                  {scholarships.length} opportunities found {searchQuery ? `for "${searchQuery}"` : ''}
+                  {filteredScholarships.length} opportunities found {searchQuery ? `for "${searchQuery}"` : ''}
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {scholarships.map((scholarship) => (
-                  <ScholarshipCard
-                    key={scholarship.id}
-                    title={scholarship.title}
-                    provider={scholarship.provider}
-                    amount={scholarship.amount}
-                    deadline={scholarship.deadline}
-                    category={scholarship.category}
-                    eligibility={scholarship.eligibility}
-                    matchPercentage={scholarship.matchPercentage}
-                    saved={savedScholarships.includes(scholarship.id)}
-                    onSave={() => toggleSaveScholarship(scholarship.id)}
-                    onViewDetails={() => navigate(`/scholarship/${scholarship.id}`)}
-                  />
-                ))}
+                {filteredScholarships.length > 0 ? (
+                  filteredScholarships.map((scholarship) => (
+                    <ScholarshipCard
+                      key={scholarship.id}
+                      title={scholarship.title}
+                      provider={scholarship.provider}
+                      amount={scholarship.amount}
+                      deadline={scholarship.deadline}
+                      category={scholarship.category}
+                      eligibility={scholarship.eligibility}
+                      matchPercentage={scholarship.matchPercentage}
+                      saved={savedScholarships.includes(scholarship.id)}
+                      onSave={() => toggleSaveScholarship(scholarship.id)}
+                      onViewDetails={() => navigate(`/scholarship/${scholarship.id}`)}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-3 py-16 text-center">
+                    <p className="text-lg text-scholarship-foreground/70 mb-4">No opportunities found matching your criteria</p>
+                    <Button 
+                      onClick={() => {
+                        setSearchQuery('');
+                        setActiveFilters({
+                          minAmount: 0,
+                          maxAmount: 50000,
+                          deadlineBefore: null,
+                          scholarshipTypes: [],
+                          eligibility: [],
+                          educationLevels: [],
+                        });
+                        setFilteredScholarships(scholarships);
+                      }}
+                      className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90"
+                    >
+                      Reset Search
+                    </Button>
+                  </div>
+                )}
               </div>
               
-              {/* Pagination would go here in a real app */}
-              <div className="mt-10 flex justify-center">
-                <Button variant="outline" className="border-white/10 hover:bg-white/5 mr-2">
-                  Previous
-                </Button>
-                <Button className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90">
-                  Next
-                </Button>
-              </div>
+              {/* Pagination for results */}
+              {filteredScholarships.length > 0 && (
+                <div className="mt-10 flex justify-center">
+                  <Button variant="outline" className="border-white/10 hover:bg-white/5 mr-2">
+                    Previous
+                  </Button>
+                  <Button className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90">
+                    Next
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -29,7 +29,7 @@ export default {
           foreground: 'hsl(var(--primary-foreground))'
         },
         scholarship: {
-          background: '#0b1d26',
+          background: '#2a4458',
           foreground: '#ffffff',
           accent: '#fbd784',
         },

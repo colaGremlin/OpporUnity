@@ -33,39 +33,54 @@ export function FilterSidebar({
 }: FilterSidebarProps) {
   const [filters, setFilters] = useState<FilterOptions>({
     minAmount: 0,
-    maxAmount: 50000,
+    maxAmount: 2000000,
     deadlineBefore: null,
     scholarshipTypes: [],
     eligibility: [],
     educationLevels: [],
   });
 
+  // Pakistan-specific scholarship types
   const scholarshipTypes = [
     "Merit-Based", 
     "Need-Based", 
-    "Diversity", 
-    "Research", 
-    "Community Service", 
-    "Athletic", 
-    "Creative Arts"
+    "Research Grant", 
+    "Fellowship", 
+    "Training Program", 
+    "Scholarship",
+    "Research Collaboration",
+    "Vocational",
+    "International",
+    "Regional"
   ];
 
+  // Pakistan-specific eligibility options
   const eligibilityOptions = [
+    "Pakistani Nationals",
+    "Pakistani Citizens",
     "International Students",
     "First Generation",
     "Women",
-    "BIPOC Students",
-    "LGBTQ+",
-    "Students with Disabilities",
+    "Religious Minorities",
+    "Balochistan Residents",
+    "KPK Residents",
     "Rural Communities",
+    "Underprivileged",
+    "Low Income",
     "Military/Veterans",
+    "People with Disabilities"
   ];
 
   const educationLevels = [
     "High School",
+    "Intermediate",
     "Undergraduate",
-    "Graduate",
+    "Bachelors",
+    "Masters",
+    "MS/PhD",
+    "PhD",
     "Doctoral",
+    "Post-Doctoral",
     "Trade/Vocational",
     "Professional Certification"
   ];
@@ -89,7 +104,7 @@ export function FilterSidebar({
   const resetFilters = () => {
     setFilters({
       minAmount: 0,
-      maxAmount: 50000,
+      maxAmount: 2000000,
       deadlineBefore: null,
       scholarshipTypes: [],
       eligibility: [],
@@ -115,7 +130,7 @@ export function FilterSidebar({
       <div className="flex items-center justify-between p-4 border-b border-white/10">
         <h2 className="text-lg font-semibold flex items-center">
           <FilterIcon className="h-5 w-5 mr-2 text-scholarship-accent" />
-          Filter Scholarships
+          Filter Opportunities
         </h2>
         <Button variant="ghost" size="icon" onClick={onClose} className="md:hidden">
           <X className="h-5 w-5" />
@@ -124,14 +139,14 @@ export function FilterSidebar({
       
       <ScrollArea className="h-[calc(100vh-60px)] p-4">
         <div className="space-y-6">
-          {/* Amount Range */}
+          {/* Amount Range (Pakistan-specific in PKR or other currencies) */}
           <div>
             <h3 className="text-scholarship-accent font-medium mb-3">Award Amount</h3>
             <div className="space-y-4">
               <Slider
                 defaultValue={[filters.minAmount, filters.maxAmount]}
-                max={50000}
-                step={500}
+                max={2000000}
+                step={10000}
                 onValueChange={(value) => setFilters({
                   ...filters, 
                   minAmount: value[0], 
@@ -142,26 +157,26 @@ export function FilterSidebar({
                 <div>
                   <Label htmlFor="min-amount">Min</Label>
                   <div className="relative mt-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-scholarship-foreground/50">$</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-scholarship-foreground/50">PKR</span>
                     <Input
                       id="min-amount"
                       type="number"
                       value={filters.minAmount}
                       onChange={(e) => setFilters({...filters, minAmount: parseInt(e.target.value) || 0})}
-                      className="pl-8 bg-white/5 border-white/10"
+                      className="pl-12 bg-white/5 border-white/10"
                     />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="max-amount">Max</Label>
                   <div className="relative mt-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-scholarship-foreground/50">$</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-scholarship-foreground/50">PKR</span>
                     <Input
                       id="max-amount"
                       type="number"
                       value={filters.maxAmount}
                       onChange={(e) => setFilters({...filters, maxAmount: parseInt(e.target.value) || 0})}
-                      className="pl-8 bg-white/5 border-white/10"
+                      className="pl-12 bg-white/5 border-white/10"
                     />
                   </div>
                 </div>
@@ -186,7 +201,7 @@ export function FilterSidebar({
           
           {/* Scholarship Types */}
           <div>
-            <h3 className="text-scholarship-accent font-medium mb-3">Scholarship Type</h3>
+            <h3 className="text-scholarship-accent font-medium mb-3">Opportunity Type</h3>
             <div className="space-y-2">
               {scholarshipTypes.map((type) => (
                 <div key={type} className="flex items-center">
@@ -230,7 +245,7 @@ export function FilterSidebar({
             </div>
           </div>
           
-          {/* Eligibility */}
+          {/* Eligibility - Pakistan Specific */}
           <div>
             <h3 className="text-scholarship-accent font-medium mb-3">Special Eligibility</h3>
             <div className="space-y-2">

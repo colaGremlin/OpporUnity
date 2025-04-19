@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,10 +8,10 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     
-    /* Scholarship Finder Theme Colors */
-    --scholarship-bg: 206 59% 10%; /* #0b1d26 */
+    /* Updated Scholarship Finder Theme Colors - More readable */
+    --scholarship-bg: 210 33% 25%; /* #2a4458 - lighter blue for better readability */
     --scholarship-text: 0 0% 100%; /* #ffffff */
-    --scholarship-accent: 43 96% 72%; /* #fbd784 */
+    --scholarship-accent: 43 96% 72%; /* #fbd784 - keeping the accent color */
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -103,4 +104,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Button feedback animation */
+@keyframes button-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+.button-feedback {
+  animation: button-pulse 0.2s ease-in-out;
 }

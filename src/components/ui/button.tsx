@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -40,12 +41,32 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
+    
+    // Add click feedback
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      const target = e.currentTarget;
+      target.classList.add('button-feedback');
+      
+      // Optional click sound
+      const clickSound = new Audio('/button-click.mp3');
+      clickSound.volume = 0.2;
+      clickSound.play().catch(e => console.log('Audio playback prevented:', e));
+      
+      // Remove animation class after animation completes
+      setTimeout(() => {
+        target.classList.remove('button-feedback');
+      }, 200);
+      
+      if (onClick) onClick(e);
+    };
+    
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        onClick={handleClick}
         {...props}
       />
     )

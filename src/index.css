@@ -8,10 +8,10 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     
-    /* Updated Scholarship Finder Theme Colors */
-    --scholarship-bg: 0 0% 100%; /* White background */
-    --scholarship-text: 0 0% 0%; /* Black text */
-    --scholarship-accent: 122 40% 56%; /* #62BD69 - green accent */
+    /* Updated Scholarship Finder Theme Colors - More readable */
+    --scholarship-bg: 210 33% 25%; /* #2a4458 - lighter blue for better readability */
+    --scholarship-text: 0 0% 100%; /* #ffffff */
+    --scholarship-accent: 43 96% 72%; /* #fbd784 - keeping the accent color */
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -19,7 +19,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 122 40% 56%; /* Green primary (same as accent) */
+    --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -96,21 +96,6 @@
 
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-/* Glass morphism utility classes */
-@layer utilities {
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-sm border border-black/10 shadow-md;
-  }
-  
-  .glass-button {
-    @apply bg-scholarship-accent/90 backdrop-blur-sm border border-scholarship-accent/20 shadow-sm;
-  }
-  
-  .glass-input {
-    @apply bg-white/90 border border-black/20 backdrop-blur-sm;
   }
 }
 

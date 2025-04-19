@@ -1,5 +1,5 @@
 
-import { CalendarIcon, BookmarkIcon, CoinIcon, GraduationCapIcon } from "lucide-react";
+import { CalendarIcon, BookmarkIcon, DollarSignIcon, GraduationCapIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -49,15 +49,10 @@ export function ScholarshipCard({
 
   const daysLeft = daysUntil();
   
-  // Format amount to display Rs instead of dollar
-  const formatAmount = (amountStr: string) => {
-    return amountStr.replace('$', 'Rs. ').replace('PKR', 'Rs. ');
-  };
-  
   return (
-    <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 glass-card text-scholarship-foreground overflow-hidden">
+    <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 bg-scholarship-background border border-white/10 text-scholarship-foreground overflow-hidden">
       {matchPercentage && (
-        <div className="bg-scholarship-accent text-white py-1 px-3 text-xs font-semibold absolute top-0 right-0">
+        <div className="bg-scholarship-accent/90 text-scholarship-background py-1 px-3 text-xs font-semibold absolute top-0 right-0">
           {matchPercentage}% Match
         </div>
       )}
@@ -82,8 +77,8 @@ export function ScholarshipCard({
         
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="flex items-center">
-            <CoinIcon className="h-4 w-4 mr-2 text-scholarship-accent" />
-            <span className="text-sm">{formatAmount(amount)}</span>
+            <DollarSignIcon className="h-4 w-4 mr-2 text-scholarship-accent" />
+            <span className="text-sm">{amount}</span>
           </div>
           <div className="flex items-center">
             <CalendarIcon className="h-4 w-4 mr-2 text-scholarship-accent" />
@@ -100,14 +95,14 @@ export function ScholarshipCard({
         
         <div className="flex items-center mb-4">
           <GraduationCapIcon className="h-4 w-4 mr-2 text-scholarship-accent" />
-          <Badge className="bg-black/5 hover:bg-black/10 text-xs border border-black/10">{category}</Badge>
+          <Badge className="bg-white/10 hover:bg-white/20 text-xs">{category}</Badge>
         </div>
         
         <div className="space-y-2">
           <p className="text-xs font-medium text-scholarship-foreground/70">Eligibility:</p>
           <div className="flex flex-wrap gap-2">
             {eligibility.map((item, index) => (
-              <Badge key={index} variant="outline" className="bg-white/50 text-xs border-black/10">
+              <Badge key={index} variant="outline" className="bg-white/5 text-xs border-white/10">
                 {item}
               </Badge>
             ))}
@@ -115,10 +110,10 @@ export function ScholarshipCard({
         </div>
       </CardContent>
       
-      <CardFooter className="pt-0 px-6 pb-6">
+      <CardFooter className="pt-0 px-6 pb-6 mt-auto">
         <Button 
           onClick={onViewDetails} 
-          className="w-full bg-scholarship-accent text-white hover:bg-scholarship-accent/80"
+          className="w-full bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90"
         >
           View Details
         </Button>

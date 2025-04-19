@@ -57,37 +57,32 @@ export function FilterSidebar({
   // Pakistan-specific eligibility options
   const eligibilityOptions = [
     "Pakistani Nationals",
-    "Low Income Students",
-    "Women in STEM",
-    "Persons with Disabilities",
-    "Rural Areas Students",
-    "First Generation Students",
-    "Balochi",
-    "Pashtun/Pakhtun",
-    "Sindhi",
-    "Punjabi",
-    "Saraiki",
-    "Urdu-speaking",
-    "Kashmiri",
-    "Gilgit-Baltistan",
-    "Christian Minority",
-    "Hindu Minority",
-    "Sikh Minority",
-    "Parsi Minority",
-    "Kalash Minority"
+    "Pakistani Citizens",
+    "International Students",
+    "First Generation",
+    "Women",
+    "Religious Minorities",
+    "Balochistan Residents",
+    "KPK Residents",
+    "Rural Communities",
+    "Underprivileged",
+    "Low Income",
+    "Military/Veterans",
+    "People with Disabilities"
   ];
 
   const educationLevels = [
-    "Matric/SSC",
-    "Intermediate/HSSC",
-    "Associates Degree",
+    "High School",
+    "Intermediate",
+    "Undergraduate",
     "Bachelors",
     "Masters",
-    "MPhil",
+    "MS/PhD",
     "PhD",
-    "Professional Degree",
-    "Vocational/Technical",
-    "Diploma"
+    "Doctoral",
+    "Post-Doctoral",
+    "Trade/Vocational",
+    "Professional Certification"
   ];
 
   const handleCheckboxChange = (category: 'scholarshipTypes' | 'eligibility' | 'educationLevels', value: string) => {
@@ -127,12 +122,12 @@ export function FilterSidebar({
   return (
     <div 
       className={cn(
-        "fixed inset-y-0 left-0 z-40 w-full md:static md:w-72 lg:w-80 bg-white border-r border-black/10 transform transition-transform duration-300 ease-in-out shadow-md",
+        "fixed inset-y-0 left-0 z-40 w-full md:w-80 bg-scholarship-background border-r border-white/10 transform transition-transform duration-300 ease-in-out",
         isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
         className
       )}
     >
-      <div className="flex items-center justify-between p-4 border-b border-black/10">
+      <div className="flex items-center justify-between p-4 border-b border-white/10">
         <h2 className="text-lg font-semibold flex items-center">
           <FilterIcon className="h-5 w-5 mr-2 text-scholarship-accent" />
           Filter Opportunities
@@ -144,7 +139,7 @@ export function FilterSidebar({
       
       <ScrollArea className="h-[calc(100vh-60px)] p-4">
         <div className="space-y-6">
-          {/* Amount Range (Pakistan-specific in PKR) */}
+          {/* Amount Range (Pakistan-specific in PKR or other currencies) */}
           <div>
             <h3 className="text-scholarship-accent font-medium mb-3">Award Amount</h3>
             <div className="space-y-4">
@@ -157,32 +152,31 @@ export function FilterSidebar({
                   minAmount: value[0], 
                   maxAmount: value[1]
                 })}
-                className="text-scholarship-accent"
               />
               <div className="flex justify-between items-center">
                 <div>
                   <Label htmlFor="min-amount">Min</Label>
                   <div className="relative mt-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-scholarship-foreground/50">Rs.</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-scholarship-foreground/50">PKR</span>
                     <Input
                       id="min-amount"
                       type="number"
                       value={filters.minAmount}
                       onChange={(e) => setFilters({...filters, minAmount: parseInt(e.target.value) || 0})}
-                      className="pl-12 glass-input"
+                      className="pl-12 bg-white/5 border-white/10"
                     />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="max-amount">Max</Label>
                   <div className="relative mt-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-scholarship-foreground/50">Rs.</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-scholarship-foreground/50">PKR</span>
                     <Input
                       id="max-amount"
                       type="number"
                       value={filters.maxAmount}
                       onChange={(e) => setFilters({...filters, maxAmount: parseInt(e.target.value) || 0})}
-                      className="pl-12 glass-input"
+                      className="pl-12 bg-white/5 border-white/10"
                     />
                   </div>
                 </div>
@@ -199,7 +193,7 @@ export function FilterSidebar({
                 type="date"
                 value={filters.deadlineBefore || ''}
                 onChange={(e) => setFilters({...filters, deadlineBefore: e.target.value})}
-                className="pl-10 glass-input"
+                className="pl-10 bg-white/5 border-white/10"
                 placeholder="Filter by deadline"
               />
             </div>
@@ -215,7 +209,7 @@ export function FilterSidebar({
                     id={`type-${type}`}
                     checked={filters.scholarshipTypes.includes(type)}
                     onCheckedChange={() => handleCheckboxChange('scholarshipTypes', type)}
-                    className="border-black/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-white"
+                    className="border-white/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-scholarship-background"
                   />
                   <Label 
                     htmlFor={`type-${type}`}
@@ -238,7 +232,7 @@ export function FilterSidebar({
                     id={`level-${level}`}
                     checked={filters.educationLevels.includes(level)}
                     onCheckedChange={() => handleCheckboxChange('educationLevels', level)}
-                    className="border-black/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-white"
+                    className="border-white/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-scholarship-background"
                   />
                   <Label 
                     htmlFor={`level-${level}`}
@@ -261,7 +255,7 @@ export function FilterSidebar({
                     id={`eligibility-${option}`}
                     checked={filters.eligibility.includes(option)}
                     onCheckedChange={() => handleCheckboxChange('eligibility', option)}
-                    className="border-black/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-white"
+                    className="border-white/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-scholarship-background"
                   />
                   <Label 
                     htmlFor={`eligibility-${option}`}
@@ -278,14 +272,14 @@ export function FilterSidebar({
         <div className="mt-8 space-y-3 pb-6">
           <Button 
             onClick={applyFilters} 
-            className="w-full bg-scholarship-accent text-white hover:bg-scholarship-accent/80"
+            className="w-full bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90"
           >
             Apply Filters
           </Button>
           <Button 
             onClick={resetFilters}
             variant="outline" 
-            className="w-full border-black/10 hover:bg-scholarship-accent/10"
+            className="w-full border-white/10 hover:bg-white/5"
           >
             Reset Filters
           </Button>

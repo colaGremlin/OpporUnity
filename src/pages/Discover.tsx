@@ -436,7 +436,12 @@ const Discover = () => {
             />
           </div>
           
-          <div ref={contentRef} className={`flex-grow p-4 md:p-6 transition-all duration-300 ${filterOpen ? 'md:ml-80' : 'ml-0'}`}>
+          <div
+  ref={contentRef}
+  className={`flex-grow p-4 md:p-6 transition-all duration-300 ${
+    filterOpen ? 'md:ml-80' : ''
+  }`}
+>
             <div className="container mx-auto">
               <div className="mb-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-2">

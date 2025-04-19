@@ -59,7 +59,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1527891751199-7225231a68dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1587&q=80')] bg-cover bg-center opacity-10"></div>
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 relative z-10     -mt-10 md:-mt-16 lg:-mt-20">
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               Find Your Path to Educational 
@@ -108,25 +108,13 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Google Maps Integration - Top Universities in Pakistan */}
-      <section className="py-10 bg-scholarship-background/80">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-            <span className="text-scholarship-accent">Explore</span> Top Universities
-          </h2>
-          <p className="text-center text-scholarship-foreground/70 max-w-2xl mx-auto mb-8">
-            Discover scholarship opportunities at Pakistan's leading educational institutions using our Google Maps integration.
-          </p>
-          
-          <GoogleMapView />
-        </div>
-      </section>
+      
       
       {/* Key Features Section */}
       <section className="py-16 bg-scholarship-background/80">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-12 text-center">
-            <span className="text-scholarship-accent">How</span> ScholarMatch Works
+            <span className="text-scholarship-accent">How</span> OpporUnity Works
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

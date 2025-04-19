@@ -31,7 +31,7 @@ const ScholarshipDetail = () => {
     title: "Future Leaders Scholarship",
     provider: "Global Education Foundation",
     providerLogo: "https://via.placeholder.com/100",
-    amount: "$10,000",
+    amount: "PKR 10,000",
     deadline: "2025-08-15",
     category: "Leadership",
     description: "The Future Leaders Scholarship is designed to support outstanding students who have demonstrated leadership potential and a commitment to community service. Recipients will join a network of emerging leaders and gain access to mentorship opportunities.",
@@ -40,7 +40,7 @@ const ScholarshipDetail = () => {
       "Minimum 3.5 GPA on a 4.0 scale",
       "Demonstrated leadership experience",
       "Community service involvement",
-      "U.S. citizen or permanent resident"
+      "Pakistani Citizen or Permanent Resident"
     ],
     requirements: [
       "Completed application form",
@@ -58,7 +58,7 @@ const ScholarshipDetail = () => {
     faqs: [
       {
         question: "Can international students apply?",
-        answer: "No, this scholarship is currently only available to U.S. citizens and permanent residents."
+        answer: "No, this scholarship is currently only available to Pakistani citizens and permanent residents."
       },
       {
         question: "Is the scholarship renewable?",
@@ -73,7 +73,7 @@ const ScholarshipDetail = () => {
     applicationUrl: "https://example.com/apply",
     datePosted: "2025-03-01",
     lastUpdated: "2025-04-01",
-    awards: "10 awards of $10,000 each",
+    awards: "10 awards of PKR 10,000 each",
     similarScholarships: [2, 5, 6]
   };
   
@@ -121,7 +121,7 @@ const ScholarshipDetail = () => {
                   <Badge className="bg-scholarship-accent text-scholarship-background">
                     {scholarship.matchPercentage}% Match
                   </Badge>
-                  <Badge variant="outline" className="border-white/10 bg-white/5">
+                  <Badge variant="outline" className="border-white/10 bg-white/5 text-white">
                     {scholarship.category}
                   </Badge>
                 </div>

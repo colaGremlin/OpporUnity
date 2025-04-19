@@ -102,7 +102,7 @@ export function ScholarshipCard({
           <p className="text-xs font-medium text-scholarship-foreground/70">Eligibility:</p>
           <div className="flex flex-wrap gap-2">
             {eligibility.map((item, index) => (
-              <Badge key={index} variant="outline" className="bg-white/5 text-xs border-white/10">
+              <Badge key={index} variant="outline" className="bg-white/5 text-xs border-white/10   text-white">
                 {item}
               </Badge>
             ))}

@@ -12,7 +12,7 @@ export function Header() {
     <header className="bg-scholarship-background text-scholarship-foreground border-b border-white/10 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
-          <span className="text-scholarship-accent font-bold text-2xl">ScholarMatch</span>
+          <span className="text-scholarship-accent font-bold text-2xl">OpporUnity</span>
         </Link>
 
         <div className="hidden md:flex items-center space-x-6">

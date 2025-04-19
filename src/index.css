@@ -6,6 +6,11 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
+    
+    /* Scholarship Finder Theme Colors */
+    --scholarship-bg: 206 59% 10%; /* #0b1d26 */
+    --scholarship-text: 0 0% 100%; /* #ffffff */
+    --scholarship-accent: 43 96% 72%; /* #fbd784 */
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;

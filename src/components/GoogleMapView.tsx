@@ -1,7 +1,14 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+
+// Define Google Maps types to fix TypeScript errors
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 interface Location {
   name: string;
@@ -28,11 +35,16 @@ export function GoogleMapView({
   description = "View scholarship opportunities at these top institutions"
 }: GoogleMapViewProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const mapRef = React.useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<any>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const scriptLoaded = useRef(false);
 
   // Load Google Maps API
   useEffect(() => {
+    // Check if script is already being loaded
+    if (scriptLoaded.current) return;
+    
+    scriptLoaded.current = true;
     const googleMapsScript = document.createElement('script');
     googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`;
     googleMapsScript.async = true;
@@ -45,23 +57,26 @@ export function GoogleMapView({
     document.head.appendChild(googleMapsScript);
     
     return () => {
-      document.head.removeChild(googleMapsScript);
+      // Only remove if the script exists in the document
+      if (document.head.contains(googleMapsScript)) {
+        document.head.removeChild(googleMapsScript);
+      }
     };
   }, []);
 
   // Initialize map when script is loaded
   useEffect(() => {
-    if (isLoaded && mapRef.current) {
+    if (isLoaded && mapRef.current && window.google) {
       // Calculate center point from all locations
-      const bounds = new google.maps.LatLngBounds();
+      const bounds = new window.google.maps.LatLngBounds();
       locations.forEach(location => {
         bounds.extend({ lat: location.lat, lng: location.lng });
       });
       
-      const newMap = new google.maps.Map(mapRef.current, {
+      const newMap = new window.google.maps.Map(mapRef.current, {
         center: bounds.getCenter(),
         zoom: 6,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
         mapTypeControl: true,
         streetViewControl: true,
         fullscreenControl: true,
@@ -81,15 +96,15 @@ export function GoogleMapView({
       
       // Add markers for each location
       locations.forEach(location => {
-        const marker = new google.maps.Marker({
+        const marker = new window.google.maps.Marker({
           position: { lat: location.lat, lng: location.lng },
           map: newMap,
           title: location.name,
-          animation: google.maps.Animation.DROP
+          animation: window.google.maps.Animation.DROP
         });
         
         // Add info window
-        const infoWindow = new google.maps.InfoWindow({
+        const infoWindow = new window.google.maps.InfoWindow({
           content: `
             <div style="padding: 10px;">
               <h3 style="margin: 0; font-weight: 600;">${location.name}</h3>
@@ -103,10 +118,13 @@ export function GoogleMapView({
         });
       });
       
-      newMap.fitBounds(bounds);
-      setMap(newMap);
+      // Fit bounds but don't set map state in an effect that depends on map
+      if (!map) {
+        newMap.fitBounds(bounds);
+        setMap(newMap);
+      }
     }
-  }, [isLoaded, locations]);
+  }, [isLoaded, locations, map]);
 
   return (
     <Card className="border border-scholarship-accent/20 bg-white/5">

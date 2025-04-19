@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -29,9 +30,9 @@ export default {
           foreground: 'hsl(var(--primary-foreground))'
         },
         scholarship: {
-          background: '#2a4458',
-          foreground: '#ffffff',
-          accent: '#fbd784',
+          background: '#ffffff', // Changed to white
+          foreground: '#000000', // Changed to black
+          accent: '#62BD69',     // Changed to the requested green
         },
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',

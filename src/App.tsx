@@ -13,12 +13,17 @@ import Profile from "./pages/Profile";
 import ScholarshipDetail from "./pages/ScholarshipDetail";
 import NotFound from "./pages/NotFound";
 
-// Scroll to top component
+// Scroll to top component that works more reliably
 function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Always scroll to top when location changes
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }, [pathname]);
 
   return null;

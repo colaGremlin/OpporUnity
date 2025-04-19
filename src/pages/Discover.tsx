@@ -52,7 +52,7 @@ const Discover = () => {
       id: 2,
       title: "STEM Research Grant",
       provider: "Pakistan Science Foundation",
-      amount: "PKR 1,000,000",
+      amount: "Rs. 1,000,000",
       deadline: "2025-07-01",
       category: "Research Grant",
       eligibility: ["STEM Fields", "Research Proposal", "Pakistani University"],
@@ -64,10 +64,10 @@ const Discover = () => {
       id: 3,
       title: "Balochistan Education Endowment Fund",
       provider: "Government of Balochistan",
-      amount: "PKR 150,000/year",
+      amount: "Rs. 150,000/year",
       deadline: "2025-06-30",
       category: "Need-Based",
-      eligibility: ["Balochistan Residents", "Underprivileged", "Merit"],
+      eligibility: ["Balochi", "Underprivileged", "Merit"],
       matchPercentage: 92,
       type: "Scholarship",
       keywords: ["balochistan", "need-based", "underprivileged", "province", "government"]
@@ -76,7 +76,7 @@ const Discover = () => {
       id: 4,
       title: "Arts & Cultural Fellowship",
       provider: "Pakistan National Council of the Arts",
-      amount: "PKR 500,000",
+      amount: "Rs. 500,000",
       deadline: "2025-09-15",
       category: "Arts",
       eligibility: ["Pakistani Artists", "Portfolio Required", "Cultural Studies"],
@@ -86,21 +86,21 @@ const Discover = () => {
     },
     {
       id: 5,
-      title: "USAID Merit & Need-Based Scholarship",
-      provider: "USAID Pakistan",
+      title: "Merit & Need-Based Scholarship",
+      provider: "The Citizens Foundation",
       amount: "Full Tuition",
       deadline: "2025-07-30",
       category: "Need-Based",
       eligibility: ["Underprivileged", "3.0+ GPA", "Financial Need"],
       matchPercentage: 90,
       type: "Scholarship",
-      keywords: ["usaid", "need-based", "merit", "financial need", "international"]
+      keywords: ["need-based", "merit", "financial need", "foundation", "education"]
     },
     {
       id: 6,
       title: "Social Innovation Challenge",
       provider: "Akhuwat Foundation",
-      amount: "PKR 750,000",
+      amount: "Rs. 750,000",
       deadline: "2025-08-05",
       category: "Social Impact",
       eligibility: ["Social Entrepreneurs", "Community Project", "Sustainable Development"],
@@ -112,7 +112,7 @@ const Discover = () => {
       id: 7,
       title: "Women in Technology Scholarship",
       provider: "Pakistan Software Houses Association",
-      amount: "PKR 600,000",
+      amount: "Rs. 600,000",
       deadline: "2025-06-15",
       category: "STEM",
       eligibility: ["Women", "Computer Science", "IT Fields"],
@@ -148,7 +148,7 @@ const Discover = () => {
       id: 10,
       title: "Pakistan Agricultural Research Grant",
       provider: "Pakistan Agricultural Research Council",
-      amount: "PKR 1,500,000",
+      amount: "Rs. 1,500,000",
       deadline: "2025-10-15",
       category: "Agriculture",
       eligibility: ["Agriculture Research", "Food Security", "Climate Adaptation"],
@@ -160,10 +160,10 @@ const Discover = () => {
       id: 11,
       title: "Minority Education Scholarship",
       provider: "Ministry of Religious Affairs",
-      amount: "PKR 120,000/year",
+      amount: "Rs. 120,000/year",
       deadline: "2025-07-22",
       category: "Minority Support",
-      eligibility: ["Religious Minorities", "Pakistani Citizens", "Academic Merit"],
+      eligibility: ["Christian Minority", "Hindu Minority", "Sikh Minority", "Academic Merit"],
       matchPercentage: 88,
       type: "Scholarship",
       keywords: ["minority", "christian", "hindu", "sikh", "religious", "diversity"]
@@ -182,9 +182,9 @@ const Discover = () => {
     },
     {
       id: 13,
-      title: "DAAD Pakistani-German Research Collaboration",
-      provider: "DAAD Pakistan",
-      amount: "EUR 25,000",
+      title: "Pakistani-German Research Collaboration",
+      provider: "German Academic Exchange Service",
+      amount: "Rs. 2,500,000",
       deadline: "2025-08-30",
       category: "Research",
       eligibility: ["Pakistani Researchers", "German Partnership", "Joint Project"],
@@ -196,10 +196,10 @@ const Discover = () => {
       id: 14,
       title: "KPK Tribal Areas Education Support",
       provider: "Government of KPK",
-      amount: "PKR 80,000/year",
+      amount: "Rs. 80,000/year",
       deadline: "2025-09-10",
       category: "Regional",
-      eligibility: ["KPK Tribal Areas Residents", "Financial Need", "Any Field"],
+      eligibility: ["Pashtun/Pakhtun", "Financial Need", "Any Field"],
       matchPercentage: 91,
       type: "Scholarship",
       keywords: ["tribal", "kpk", "khyber pakhtunkhwa", "region", "rural", "support"]
@@ -318,7 +318,24 @@ const Discover = () => {
     
     setFilteredScholarships(filtered);
     
-    toast.success(`Found ${filtered.length} scholarships`);
+    if (filtered.length === 0) {
+      toast.error("No scholarships match your search criteria");
+    } else {
+      toast.success(`Found ${filtered.length} opportunities`);
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    if (!activeFilters.deadlineBefore && 
+        activeFilters.scholarshipTypes.length === 0 && 
+        activeFilters.eligibility.length === 0 && 
+        activeFilters.educationLevels.length === 0) {
+      setFilteredScholarships(scholarships);
+      toast.info("Showing all opportunities");
+    } else {
+      setTimeout(() => handleSearch(), 100);
+    }
   };
 
   const handleApplyFilters = (filters: FilterOptions) => {
@@ -349,7 +366,7 @@ const Discover = () => {
       <Header />
       
       <main className="flex-grow">
-        <div className="bg-scholarship-background/90 border-b border-white/10 sticky top-[73px] z-30 py-4">
+        <div className="bg-scholarship-background sticky top-[73px] z-30 py-4 border-b border-black/10 shadow-sm">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-grow">
@@ -357,9 +374,14 @@ const Discover = () => {
                 <Input
                   type="text"
                   placeholder="Search scholarships, grants, fellowships..."
-                  className="pl-10 bg-white/5 border-white/10 text-scholarship-foreground w-full"
+                  className="pl-10 glass-input w-full"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    if (e.target.value === '') {
+                      clearSearch();
+                    }
+                  }}
                 />
                 {searchQuery && (
                   <Button 
@@ -367,10 +389,7 @@ const Discover = () => {
                     variant="ghost" 
                     size="icon" 
                     className="absolute right-2 top-1/2 -translate-y-1/2"
-                    onClick={() => {
-                      setSearchQuery("");
-                      setTimeout(() => handleSearch(), 100);
-                    }}
+                    onClick={clearSearch}
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -381,7 +400,7 @@ const Discover = () => {
                 <Button 
                   type="button" 
                   variant="outline" 
-                  className="border-white/10 hover:bg-white/5"
+                  className="border-black/10 hover:bg-scholarship-accent/10"
                   onClick={() => setFilterOpen(!filterOpen)}
                 >
                   {filterOpen ? (
@@ -404,7 +423,7 @@ const Discover = () => {
                     setTimeout(() => handleSearch(), 100);
                   }}
                 >
-                  <SelectTrigger className="bg-white/5 border-white/10 w-[180px]">
+                  <SelectTrigger className="glass-input border-black/10 w-[180px]">
                     <SelectValue placeholder="Sort By" />
                   </SelectTrigger>
                   <SelectContent>
@@ -417,7 +436,7 @@ const Discover = () => {
                 
                 <Button 
                   type="submit" 
-                  className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90"
+                  className="bg-scholarship-accent text-white hover:bg-scholarship-accent/80"
                 >
                   Search
                 </Button>
@@ -427,7 +446,7 @@ const Discover = () => {
         </div>
         
         <div className="flex flex-grow">
-          <div className={`transition-all duration-300 fixed md:static top-[136px] bottom-0 left-0 z-20 bg-scholarship-background border-r border-white/10 w-80 overflow-auto 
+          <div className={`transition-all duration-300 md:static fixed top-[136px] bottom-0 left-0 z-20 w-80 md:w-72 lg:w-80 bg-white border-r border-black/10 shadow-md overflow-auto 
             ${filterOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-0 md:opacity-0 md:invisible'}`}>
             <FilterSidebar 
               isOpen={filterOpen} 
@@ -436,11 +455,12 @@ const Discover = () => {
             />
           </div>
           
-          <div ref={contentRef} className={`flex-grow p-4 md:p-6 transition-all duration-300 ${filterOpen ? 'md:ml-80' : 'ml-0'}`}>
+          <div ref={contentRef} className={`flex-grow p-4 md:p-6 transition-all duration-300 
+            ${filterOpen ? 'md:pl-80' : 'md:pl-0'}`}>
             <div className="container mx-auto">
               <div className="mb-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-2">
-                  Discover <span className="text-scholarship-accent">Opportunities</span> in Pakistan
+                  Discover <span className="text-scholarship-accent">Opportunities</span> for Underserved Students
                 </h1>
                 <p className="text-scholarship-foreground/70">
                   {filteredScholarships.length} opportunities found {searchQuery ? `for "${searchQuery}"` : ''}
@@ -480,7 +500,7 @@ const Discover = () => {
                         });
                         setFilteredScholarships(scholarships);
                       }}
-                      className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90"
+                      className="bg-scholarship-accent text-white hover:bg-scholarship-accent/80"
                     >
                       Reset Search
                     </Button>
@@ -490,10 +510,10 @@ const Discover = () => {
               
               {filteredScholarships.length > 0 && (
                 <div className="mt-10 flex justify-center">
-                  <Button variant="outline" className="border-white/10 hover:bg-white/5 mr-2">
+                  <Button variant="outline" className="border-black/10 hover:bg-scholarship-accent/10 mr-2">
                     Previous
                   </Button>
-                  <Button className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90">
+                  <Button className="bg-scholarship-accent text-white hover:bg-scholarship-accent/80">
                     Next
                   </Button>
                 </div>

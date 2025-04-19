@@ -10,14 +10,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/80",
+        default: "bg-scholarship-accent text-white hover:bg-scholarship-accent/80",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-white/20 bg-white/5 text-scholarship-foreground hover:bg-white/10",
+          "border border-scholarship-accent/20 bg-white/50 text-scholarship-foreground hover:bg-scholarship-accent/10",
         secondary:
-          "bg-white/10 text-scholarship-foreground hover:bg-white/20",
-        ghost: "bg-transparent hover:bg-white/10 text-scholarship-foreground",
+          "bg-white/50 border border-black/10 text-scholarship-foreground hover:bg-scholarship-accent/10",
+        ghost: "bg-transparent hover:bg-scholarship-accent/10 text-scholarship-foreground",
         link: "text-scholarship-accent underline-offset-4 hover:underline",
       },
       size: {

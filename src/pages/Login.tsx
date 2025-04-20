@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { FcGoogle } from 'react-icons/fc';
-import { auth, googleProvider } from '@/firebase';
+import { auth, googleProvider, analytics } from '@/firebase';
 import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
+import { logEvent } from 'firebase/analytics';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,6 +34,7 @@ const Login = () => {
     setError(null);
     try {
       await signInWithPopup(auth, googleProvider);
+      logEvent(analytics, 'sign_up', { method: 'google' });
       navigate('/dashboard'); // Replace '/dashboard' with your desired redirect route
     } catch (error: any) {
       setError(error.message);

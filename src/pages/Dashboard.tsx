@@ -276,74 +276,74 @@ const Dashboard = () => {
               
               {/* Recent Applications */}
               <Card className="bg-white/5 border-white/10">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl">My Recent Applications</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {applications.length > 0 ? (
-                    <div className="space-y-4">
-                      {applications.map(application => (
-                        <div key={application.id} className="p-4 bg-white/5 border border-white/10 rounded-lg">
-                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                            <div>
-                              <Link 
-                                to={`/scholarship/${application.scholarshipId}`}
-                                className="text-lg font-semibold hover:text-scholarship-accent transition-colors"
-                              >
-                                {application.title}
-                              </Link>
-                              <p className="text-scholarship-foreground/70">{application.provider}</p>
-                            </div>
-                            <Badge className={`${getStatusColor(application.status)} border`}>
-                              {application.status}
-                            </Badge>
-                          </div>
-                          
-                          <div className="mb-3">
-                            <div className="flex justify-between text-sm mb-1">
-                              <span>Application Progress</span>
-                              <span>{application.progress}%</span>
-                            </div>
-                            <Progress value={application.progress} className="h-2" />
-                          </div>
-                          
-                          <div className="flex flex-wrap gap-2 text-sm text-scholarship-foreground/70">
-                            <div className="flex items-center">
-                              <CalendarIcon className="h-4 w-4 mr-1 text-scholarship-accent" />
-                              <span>Deadline: {formatDate(application.deadline)}</span>
-                            </div>
-                            {application.status === "In Progress" && (
-                              <div className="flex items-center">
-                                <ClockIcon className="h-4 w-4 mr-1 text-yellow-500" />
-                                <span>
-                                  {calculateDaysLeft(application.deadline)} days left
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-6">
-                      <p className="text-scholarship-foreground/70 mb-4">You haven't started any applications yet.</p>
-                      <Button asChild className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90">
-                        <Link to="/discover">Find Scholarships</Link>
-                      </Button>
-                    </div>
-                  )}
-                  
-                  {applications.length > 0 && (
-                    <Button 
-                      variant="outline" 
-                      className="mt-4 w-full border-white/10 hover:bg-white/5"
-                      onClick={() => setActiveTab("applications")}
-                    >
-                      View All Applications
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
+  <CardHeader className="pb-2">
+    <CardTitle className="text-xl text-scholarship-foreground">My Recent Applications</CardTitle>
+  </CardHeader>
+  <CardContent>
+    {applications.length > 0 ? (
+      <div className="space-y-4"> {/* KEEP THIS CLASS FOR SPACING */}
+        {applications.map(application => (
+          <div key={application.id} className="p-4 bg-white/5 border border-white/10 rounded-lg">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+              <div>
+                <Link
+                  to={`/scholarship/${application.scholarshipId}`}
+                  className="text-lg font-semibold hover:text-scholarship-accent transition-colors text-scholarship-foreground"
+                >
+                  {application.title}
+                </Link>
+                <p className="text-scholarship-foreground/70">{application.provider}</p>
+              </div>
+              <Badge className={`${getStatusColor(application.status)} border`}>
+                {application.status}
+              </Badge>
+            </div>
+
+            <div className="mb-3">
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-scholarship-foreground">Application Progress</span>
+                <span className="text-scholarship-foreground">{application.progress}%</span>
+              </div>
+              <Progress value={application.progress} className="h-2" />
+            </div>
+
+            <div className="flex flex-wrap gap-2 text-sm text-scholarship-foreground/70">
+              <div className="flex items-center">
+                <CalendarIcon className="h-4 w-4 mr-1 text-scholarship-accent" />
+                <span>Deadline: {formatDate(application.deadline)}</span>
+              </div>
+              {application.status === "In Progress" && (
+                <div className="flex items-center">
+                  <ClockIcon className="h-4 w-4 mr-1 text-yellow-500" />
+                  <span>
+                    {calculateDaysLeft(application.deadline)} days left
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="text-center py-6">
+        <p className="text-scholarship-foreground/70 mb-4">You haven't started any applications yet.</p>
+        <Button asChild className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90">
+          <Link to="/discover">Find Scholarships</Link>
+        </Button>
+      </div>
+    )}
+
+    {applications.length > 0 && (
+      <Button
+        variant="outline"
+        className="mt-4 w-full border-white/10 hover:bg-white/5 text-scholarship-foreground"
+        onClick={() => setActiveTab("applications")}
+      >
+        View All Applications
+      </Button>
+    )}
+  </CardContent>
+</Card>
               
               {/* Saved Scholarships Preview */}
               <Card className="bg-white/5 border-white/10">

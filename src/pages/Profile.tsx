@@ -223,211 +223,212 @@ const Profile = () => {
             </TabsList>
             
             {/* Personal Information Tab */}
-            <TabsContent value="personal">
-              <Card className="bg-white/5 border-white/10">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <UserIcon className="h-5 w-5 mr-2 text-scholarship-accent" />
-                    Personal Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input 
-                        id="firstName" 
-                        value={personalInfo.firstName}
-                        onChange={(e) => setPersonalInfo({...personalInfo, firstName: e.target.value})}
-                        className="bg-white/5 border-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input 
-                        id="lastName" 
-                        value={personalInfo.lastName}
-                        onChange={(e) => setPersonalInfo({...personalInfo, lastName: e.target.value})}
-                        className="bg-white/5 border-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input 
-                        id="email" 
-                        type="email"
-                        value={personalInfo.email}
-                        onChange={(e) => setPersonalInfo({...personalInfo, email: e.target.value})}
-                        className="bg-white/5 border-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input 
-                        id="phone" 
-                        value={personalInfo.phone}
-                        onChange={(e) => setPersonalInfo({...personalInfo, phone: e.target.value})}
-                        className="bg-white/5 border-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="dob">Date of Birth</Label>
-                      <Input 
-                        id="dob" 
-                        type="date"
-                        value={personalInfo.dob}
-                        onChange={(e) => setPersonalInfo({...personalInfo, dob: e.target.value})}
-                        className="bg-white/5 border-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="gender">Gender</Label>
-                      <Select 
-                        value={personalInfo.gender} 
-                        onValueChange={(value) => setPersonalInfo({...personalInfo, gender: value})}
-                      >
-                        <SelectTrigger className="bg-white/5 border-white/10">
-                          <SelectValue placeholder="Select gender" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="male">Male</SelectItem>
-                          <SelectItem value="female">Female</SelectItem>
-                          <SelectItem value="non-binary">Non-binary</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                          <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Street Address</Label>
-                    <Input 
-                      id="address" 
-                      value={personalInfo.address}
-                      onChange={(e) => setPersonalInfo({...personalInfo, address: e.target.value})}
-                      className="bg-white/5 border-white/10"
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="city">City</Label>
-                      <Input 
-                        id="city" 
-                        value={personalInfo.city}
-                        onChange={(e) => setPersonalInfo({...personalInfo, city: e.target.value})}
-                        className="bg-white/5 border-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="state">State/Province</Label>
-                      <Input 
-                        id="state" 
-                        value={personalInfo.state}
-                        onChange={(e) => setPersonalInfo({...personalInfo, state: e.target.value})}
-                        className="bg-white/5 border-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="zipCode">ZIP/Postal Code</Label>
-                      <Input 
-                        id="zipCode" 
-                        value={personalInfo.zipCode}
-                        onChange={(e) => setPersonalInfo({...personalInfo, zipCode: e.target.value})}
-                        className="bg-white/5 border-white/10"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="country">Country</Label>
-                    <Select 
-                      value={personalInfo.country} 
-                      onValueChange={(value) => setPersonalInfo({...personalInfo, country: value})}
-                    >
-                      <SelectTrigger className="bg-white/5 border-white/10">
-                        <SelectValue placeholder="Select country" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="United States">United States</SelectItem>
-                        <SelectItem value="Canada">Canada</SelectItem>
-                        <SelectItem value="United Kingdom">United Kingdom</SelectItem>
-                        {/* More countries would be added here */}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <Label>Ethnicity (Optional)</Label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {ethnicityOptions.map((ethnicity) => (
-                        <div key={ethnicity} className="flex items-center space-x-2">
-                          <Checkbox 
-                            id={`ethnicity-${ethnicity}`} 
-                            checked={personalInfo.ethnicity.includes(ethnicity)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                setPersonalInfo({
-                                  ...personalInfo, 
-                                  ethnicity: [...personalInfo.ethnicity, ethnicity]
-                                });
-                              } else {
-                                setPersonalInfo({
-                                  ...personalInfo, 
-                                  ethnicity: personalInfo.ethnicity.filter(e => e !== ethnicity)
-                                });
-                              }
-                            }}
-                            className="border-white/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-scholarship-background"
-                          />
-                          <Label htmlFor={`ethnicity-${ethnicity}`} className="text-sm font-normal">
-                            {ethnicity}
-                          </Label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Checkbox 
-                      id="firstGeneration" 
-                      checked={personalInfo.firstGeneration}
-                      onCheckedChange={(checked) => 
-                        setPersonalInfo({...personalInfo, firstGeneration: !!checked})
-                      }
-                      className="border-white/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-scholarship-background"
-                    />
-                    <Label htmlFor="firstGeneration">
-                      I am a first-generation college student (neither parent has a four-year college degree)
-                    </Label>
-                  </div>
-                  
-                  <div className="flex justify-between pt-4">
-                    <Button 
-                      variant="outline" 
-                      className="border-white/10 hover:bg-white/5"
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      onClick={handleSaveProfile}
-                      className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90"
-                    >
-                      <SaveIcon className="h-4 w-4 mr-2" />
-                      Save Changes
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+            {/* Personal Information Tab */}
+<TabsContent value="personal">
+  <Card className="bg-white/5 border-white/10">
+  <CardHeader>
+      <CardTitle className="flex items-center text-scholarship-foreground"> {/* ADD THIS CLASS */}
+        <UserIcon className="h-5 w-5 mr-2 text-scholarship-accent" />
+        Personal Information
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <Label htmlFor="firstName" className="text-scholarship-foreground">First Name</Label>
+          <Input
+            id="firstName"
+            value={personalInfo.firstName}
+            onChange={(e) => setPersonalInfo({...personalInfo, firstName: e.target.value})}
+            className="bg-white/5 border-white/10 text-scholarship-foreground"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="lastName" className="text-scholarship-foreground">Last Name</Label>
+          <Input
+            id="lastName"
+            value={personalInfo.lastName}
+            onChange={(e) => setPersonalInfo({...personalInfo, lastName: e.target.value})}
+            className="bg-white/5 border-white/10 text-scholarship-foreground"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-scholarship-foreground">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={personalInfo.email}
+            onChange={(e) => setPersonalInfo({...personalInfo, email: e.target.value})}
+            className="bg-white/5 border-white/10 text-scholarship-foreground"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="phone" className="text-scholarship-foreground">Phone Number</Label>
+          <Input
+            id="phone"
+            value={personalInfo.phone}
+            onChange={(e) => setPersonalInfo({...personalInfo, phone: e.target.value})}
+            className="bg-white/5 border-white/10 text-scholarship-foreground"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="dob" className="text-scholarship-foreground">Date of Birth</Label>
+          <Input
+            id="dob"
+            type="date"
+            value={personalInfo.dob}
+            onChange={(e) => setPersonalInfo({...personalInfo, dob: e.target.value})}
+            className="bg-white/5 border-white/10 text-scholarship-foreground"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="gender" className="text-scholarship-foreground">Gender</Label>
+          <Select
+            value={personalInfo.gender}
+            onValueChange={(value) => setPersonalInfo({...personalInfo, gender: value})}
+          >
+            <SelectTrigger className="bg-white/5 border-white/10 text-scholarship-foreground">
+              <SelectValue placeholder="Select gender" className="text-scholarship-foreground" />
+            </SelectTrigger>
+            <SelectContent className="text-scholarship-foreground">
+              <SelectItem value="male" className="text-scholarship-foreground">Male</SelectItem>
+              <SelectItem value="female" className="text-scholarship-foreground">Female</SelectItem>
+              <SelectItem value="non-binary" className="text-scholarship-foreground">Non-binary</SelectItem>
+              <SelectItem value="other" className="text-scholarship-foreground">Other</SelectItem>
+              <SelectItem value="prefer-not-to-say" className="text-scholarship-foreground">Prefer not to say</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="address" className="text-scholarship-foreground">Street Address</Label>
+        <Input
+          id="address"
+          value={personalInfo.address}
+          onChange={(e) => setPersonalInfo({...personalInfo, address: e.target.value})}
+          className="bg-white/5 border-white/10 text-scholarship-foreground"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="space-y-2">
+          <Label htmlFor="city" className="text-scholarship-foreground">City</Label>
+          <Input
+            id="city"
+            value={personalInfo.city}
+            onChange={(e) => setPersonalInfo({...personalInfo, city: e.target.value})}
+            className="bg-white/5 border-white/10 text-scholarship-foreground"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="state" className="text-scholarship-foreground">State/Province</Label>
+          <Input
+            id="state"
+            value={personalInfo.state}
+            onChange={(e) => setPersonalInfo({...personalInfo, state: e.target.value})}
+            className="bg-white/5 border-white/10 text-scholarship-foreground"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="zipCode" className="text-scholarship-foreground">ZIP/Postal Code</Label>
+          <Input
+            id="zipCode"
+            value={personalInfo.zipCode}
+            onChange={(e) => setPersonalInfo({...personalInfo, zipCode: e.target.value})}
+            className="bg-white/5 border-white/10 text-scholarship-foreground"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="country" className="text-scholarship-foreground">Country</Label>
+        <Select
+          value={personalInfo.country}
+          onValueChange={(value) => setPersonalInfo({...personalInfo, country: value})}
+        >
+          <SelectTrigger className="bg-white/5 border-white/10 text-scholarship-foreground">
+            <SelectValue placeholder="Select country" className="text-scholarship-foreground" />
+          </SelectTrigger>
+          <SelectContent className="text-scholarship-foreground">
+            <SelectItem value="United States" className="text-scholarship-foreground">United States</SelectItem>
+            <SelectItem value="Canada" className="text-scholarship-foreground">Canada</SelectItem>
+            <SelectItem value="United Kingdom" className="text-scholarship-foreground">United Kingdom</SelectItem>
+            {/* More countries would be added here */}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-3">
+        <Label className="text-scholarship-foreground">Ethnicity (Optional)</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {ethnicityOptions.map((ethnicity) => (
+            <div key={ethnicity} className="flex items-center space-x-2">
+              <Checkbox
+                id={`ethnicity-${ethnicity}`}
+                checked={personalInfo.ethnicity.includes(ethnicity)}
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    setPersonalInfo({
+                      ...personalInfo,
+                      ethnicity: [...personalInfo.ethnicity, ethnicity]
+                    });
+                  } else {
+                    setPersonalInfo({
+                      ...personalInfo,
+                      ethnicity: personalInfo.ethnicity.filter(e => e !== ethnicity)
+                    });
+                  }
+                }}
+                className="border-white/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-scholarship-background"
+              />
+              <Label htmlFor={`ethnicity-${ethnicity}`} className="text-sm font-normal text-scholarship-foreground">
+                {ethnicity}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Checkbox
+          id="firstGeneration"
+          checked={personalInfo.firstGeneration}
+          onCheckedChange={(checked) =>
+            setPersonalInfo({...personalInfo, firstGeneration: !!checked})
+          }
+          className="border-white/30 data-[state=checked]:bg-scholarship-accent data-[state=checked]:text-scholarship-background"
+        />
+        <Label htmlFor="firstGeneration" className="text-scholarship-foreground">
+          I am a first-generation college student (neither parent has a four-year college degree)
+        </Label>
+      </div>
+
+      <div className="flex justify-between pt-4">
+        <Button
+          variant="outline"
+          className="border-white/10 hover:bg-white/5"
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={handleSaveProfile}
+          className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90"
+        >
+          <SaveIcon className="h-4 w-4 mr-2" />
+          Save Changes
+        </Button>
+      </div>
+    </CardContent>
+  </Card>
+</TabsContent>
             
             {/* Academic Information Tab */}
             <TabsContent value="academic">

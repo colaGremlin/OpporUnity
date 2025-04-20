@@ -12,6 +12,7 @@ import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import ScholarshipDetail from "./pages/ScholarshipDetail";
 import NotFound from "./pages/NotFound";
+import Login from './pages/Login';
 
 // Scroll to top component
 function ScrollToTop() {
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/create" element={<Profile />} />
           <Route path="/scholarship/:id" element={<ScholarshipDetail />} />
+          <Route path="/login" element={<Login />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

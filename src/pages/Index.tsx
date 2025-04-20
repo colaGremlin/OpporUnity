@@ -101,7 +101,7 @@ const Index = () => {
                 asChild
                 className="border-white/20 hover:bg-white/5"
               >
-                <Link to="/profile/create">Create Profile</Link>
+                <Link to="/login">Create Profile</Link>
               </Button>
             </div>
           </div>

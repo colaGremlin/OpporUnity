@@ -137,7 +137,7 @@ export function FilterSidebar({
         </Button>
       </div>
       
-      <ScrollArea className="h-[calc(100vh-60px)] p-4">
+      <ScrollArea className="h-[calc(100vh-200px)] p-4">
         <div className="space-y-6">
           {/* Amount Range (Pakistan-specific in PKR or other currencies) */}
           <div>

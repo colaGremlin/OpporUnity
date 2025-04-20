@@ -148,56 +148,56 @@ const Dashboard = () => {
             
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-8">
-              {/* Profile Completion */}
-              <Card className="bg-white/5 border-white/10">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl flex items-center">
-                    Complete Your Profile
-                    <Badge className="ml-3 bg-blue-500/20 text-blue-500 border border-blue-500/30">75% Complete</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Progress value={75} className="h-2 mb-4" />
-                  <p className="text-scholarship-foreground/70 mb-4">
-                    Complete your profile to improve your scholarship matches.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center">
-                      <UserIcon className="h-5 w-5 text-scholarship-accent mr-2" />
-                      <div>
-                        <div className="font-medium">Basic Info</div>
-                        <div className="text-xs text-scholarship-foreground/60">Complete</div>
-                      </div>
-                    </div>
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center">
-                      <FileIcon className="h-5 w-5 text-scholarship-accent mr-2" />
-                      <div>
-                        <div className="font-medium">Academic Details</div>
-                        <div className="text-xs text-scholarship-foreground/60">Complete</div>
-                      </div>
-                    </div>
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center">
-                      <CalendarIcon className="h-5 w-5 text-scholarship-foreground/50 mr-2" />
-                      <div>
-                        <div className="font-medium">Activities & Awards</div>
-                        <div className="text-xs text-scholarship-foreground/60">Pending</div>
-                      </div>
-                    </div>
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center">
-                      <FileIcon className="h-5 w-5 text-scholarship-foreground/50 mr-2" />
-                      <div>
-                        <div className="font-medium">Financial Info</div>
-                        <div className="text-xs text-scholarship-foreground/60">Pending</div>
-                      </div>
-                    </div>
-                  </div>
-                  <Button asChild>
-                    <Link to="/profile" className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90">
-                      Complete Profile
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+  {/* Profile Completion */}
+  <Card className="bg-white/5 border-white/10">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-xl flex items-center text-scholarship-foreground"> {/* ADDED: text-scholarship-foreground */}
+        Complete Your Profile
+        <Badge className="ml-3 bg-blue-500/20 text-blue-500 border border-blue-500/30 text-scholarship-foreground">75% Complete</Badge> {/* ADDED: text-scholarship-foreground */}
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <Progress value={75} className="h-2 mb-4" />
+      <p className="text-scholarship-foreground mb-4"> {/* MODIFIED: Changed to text-scholarship-foreground */}
+        Complete your profile to improve your scholarship matches.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center">
+          <UserIcon className="h-5 w-5 text-scholarship-accent mr-2" />
+          <div>
+            <div className="font-medium text-scholarship-foreground">Basic Info</div> {/* ADDED: text-scholarship-foreground */}
+            <div className="text-xs text-scholarship-foreground">Complete</div> {/* MODIFIED: Changed to text-scholarship-foreground */}
+          </div>
+        </div>
+        <div className="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center">
+          <FileIcon className="h-5 w-5 text-scholarship-accent mr-2" />
+          <div>
+            <div className="font-medium text-scholarship-foreground">Academic Details</div> {/* ADDED: text-scholarship-foreground */}
+            <div className="text-xs text-scholarship-foreground">Complete</div> {/* MODIFIED: Changed to text-scholarship-foreground */}
+          </div>
+        </div>
+        <div className="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center">
+          <CalendarIcon className="h-5 w-5 text-scholarship-foreground/50 mr-2" />
+          <div>
+            <div className="font-medium text-scholarship-foreground">Activities & Awards</div> {/* ADDED: text-scholarship-foreground */}
+            <div className="text-xs text-scholarship-foreground">Pending</div> {/* MODIFIED: Changed to text-scholarship-foreground */}
+          </div>
+        </div>
+        <div className="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center">
+          <FileIcon className="h-5 w-5 text-scholarship-foreground/50 mr-2" />
+          <div>
+            <div className="font-medium text-scholarship-foreground">Financial Info</div> {/* ADDED: text-scholarship-foreground */}
+            <div className="text-xs text-scholarship-foreground">Pending</div> {/* MODIFIED: Changed to text-scholarship-foreground */}
+          </div>
+        </div>
+      </div>
+      <Button asChild>
+        <Link to="/profile" className="bg-scholarship-accent text-scholarship-background hover:bg-scholarship-accent/90">
+          Complete Profile
+        </Link>
+      </Button>
+    </CardContent>
+  </Card>
               
               {/* Application Summary */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
